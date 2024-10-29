@@ -1,74 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package lotteria;
-
 import java.util.Random;
 
-/**
- *
- * @author gradassi tommaso
- */
 public class Estrazione extends Thread {
-    // attributi
-    private int matrice[];
-    private int n;
-    private int vincitori[];
-    private int numeroVincitori = 3;
-    private int numero;
     
-    /**
-     * 
-     * Metodo costruttore
-     */   
+    private int[][] numeri = new int[10][10];
+    private Random random = new Random();
+    private int[] vincitori = new int[3];
+    private int numeroVincitori = 0;
+
     public Estrazione() {
-        // popolamento matrice numeri estratti
-        // inizializzazione array vincitori
-
+        
     }
 
-    /**
-    * 
-    * Metodo per visualizzare la matrice dei numeri estratti
-    */
     public void stampaMatrice() {
-       // stampa matrice dei numeri estratti
+        System.out.println("Numeri estratti:");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                System.out.print(numeri[i][j] + "\t");
+            }
+            System.out.println();
+        }
     }
-    
-    /**
-    * 
-    * Metodo per visualizzare i vincitori dell'estrazione
-    */
+
     public void stampaVincitori() {
-        // stampa array dei vincitori
+        System.out.println("Giocatori vincitori:");
+        if (numeroVincitori == 0) {
+            System.out.println("Nessun vincitore in questa estrazione.");
+        } else {
+            for (int i = 0; i < numeroVincitori; i++) {
+                System.out.println("Giocatore " + vincitori[i] + " ha vinto!");
+            }
+        }
+    }
+
+    public void verifica(int numero, int idGiocatore) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (numero == numeri[i][j]) {
+                    System.out.println("Giocatore " + idGiocatore + " hai scelto il numero " + numero + " e hai vinto!");
+                    vincitori[numeroVincitori++] = idGiocatore;
+                    return;
+                }
+            }
+        }
+        System.out.println("Giocatore " + idGiocatore + " hai perso!");
+    }
+
+    public void run() {
+        System.out.println("INIZIO ESTRAZIONE!");
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                numeri[i][j] = random.nextInt(1000);
+            }
         }
 
-    /**
-    * 
-    * Metodo per verificare il numero scelto dal giocatore e determinare i vincitori
-    */
-    public void verifica(int numero, int idGiocatore) {
-        
-           if(numero==this.numero){
-               System.out.println("Complimenti giocatore " + idGiocatore + " hai vinto scegliendo il numero " + numero +"!");
-               
-           } else {
-               System.out.println("Che peccato giocatore " + idGiocatore + " il numero " + numero +" non era vincente!");
-           }
-    }
+        stampaMatrice();
 
-    /**
-    * 
-    * Metodo per eseguire il thread
-    */
-    public void run() {
-        // stampa iniziale
-        // estrazione dei numeri
-        // stampa matrice
-        // stampa finale
+        System.out.println("FINE ESTRAZIONE!");
     }
 }
-
-
